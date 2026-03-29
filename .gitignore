@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# Virtual environment
+venv/
+env/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Temporary files
+temp/
+output/
+uploads/
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+*.pid
+
+# Testing
+.coverage
+htmlcov/
+
+# Pandoc temporary files
+*.aux
+*.log
+*.out
+*.toc
+
+# Generated files
+*.pdf
+*.docx
+*.xlsx
+*.csv
+*.json
+*.txt
