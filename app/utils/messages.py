@@ -1,0 +1,13 @@
+class Messages:
+    FILE_EXTENSION_NOT_ALLOWED = "File extension not allowed or invalid: {ext}"
+    FILE_NAME_INVALID = "The file name is empty or too long."
+    FILE_NAME_WITH_INVALID_PATH = "The file name contains disallowed paths."
+    OUTPUT_FORMAT_NOT_ALLOWED = "Output format not allowed or invalid: {ext}"
+    CONVERSION_SIMULATED = "Conversion simulated. Implement the real logic in the conversion service."
+    FILE_TOO_LARGE = "The file exceeds the maximum allowed size of {max_mb} MB."
+    MIME_TYPE_NOT_ALLOWED = "MIME type not allowed: {mime}"
+    INVALID_FILENAME = "Invalid file name: {reason}"
+    INVALID_TARGET_FORMAT = "Invalid output format: {reason}"
+    CONVERSION_NOT_ALLOWED = "Conversion not allowed from {src} to {tgt}"
+    FILE_EMPTY = "The file is empty."
+    TARGET_FORMAT_NOT_PROVIDED = "Output format not provided."
