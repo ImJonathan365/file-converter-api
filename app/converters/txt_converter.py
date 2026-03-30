@@ -1,21 +1,32 @@
-def txt_to_pdf(input_path: str, output_path: str):
-    from reportlab.lib.pagesizes import letter
-    from reportlab.pdfgen import canvas
+import os
+import subprocess
+import time
 
-    c = canvas.Canvas(output_path, pagesize=letter)
-    width, height = letter
+def txt_to_pdf(input_file: str, output_file: str):    
+    try:
+        output_dir = os.path.dirname(output_file)
+        base_name = os.path.splitext(os.path.basename(input_file))[0]
+        generated_pdf = os.path.join(output_dir, base_name + ".pdf")
 
-    with open(input_path, "r", encoding="utf-8") as f:
-        lines = f.readlines()
+        command = [
+            "soffice",
+            "--headless",
+            "--convert-to", "pdf",
+            input_file,
+            "--outdir", output_dir
+        ]
 
-    y = height - 40
+        subprocess.run(command, check=True)
 
-    for line in lines:
-        c.drawString(40, y, line.strip())
-        y -= 15
+        timeout = 10
+        start_time = time.time()
 
-        if y < 40:
-            c.showPage()
-            y = height - 40
+        while not os.path.exists(generated_pdf):
+            if time.time() - start_time > timeout:
+                raise Exception("PDF was not generated")
+            time.sleep(0.5)
 
-    c.save()
+        os.rename(generated_pdf, output_file)
+
+    except subprocess.CalledProcessError:
+        raise Exception("Error converting TXT to PDF with LibreOffice")
