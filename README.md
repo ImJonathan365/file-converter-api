@@ -35,6 +35,7 @@ This API allows users to upload files such as Word documents, Excel spreadsheets
 | CSV  | XLSX |
 | PDF  | DOCX |
 | JPG  | PDF  |
+| JPEG | PDF  |
 | PNG  | PDF  |
 | BMP  | PDF  |
 | TIFF | PDF  |
