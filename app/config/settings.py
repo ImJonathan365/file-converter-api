@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings
-from pydantic import Field, field_validator
+from pydantic import Field
 from typing import List, Dict
 
 class Settings(BaseSettings):
@@ -24,7 +24,8 @@ class Settings(BaseSettings):
         "xlsx": ["csv", "json", "txt"],
         "csv": ["xlsx"],
         "pdf": ["docx"],
-        "jpg": ["png"],
+        "jpg": ["pdf"],
+        "jpeg": ["pdf"],
         "png": ["pdf"],
         "bmp": ["pdf"],
         "tiff": ["pdf"]
