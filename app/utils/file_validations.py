@@ -2,6 +2,14 @@ from typing import Optional
 from app.utils.messages import Messages
 
 def validate_filename(filename: str, max_length: int) -> Optional[str]:
+    """
+    Validate the filename for emptiness, length, and path traversal.
+    Args:
+        filename (str): The name of the file to validate.
+        max_length (int): Maximum allowed length for the filename.
+    Returns:
+        Optional[str]: Error message if invalid, None if valid.
+    """
     if not filename or len(filename) > max_length:
         return Messages.FILE_NAME_INVALID
     if ".." in filename or filename.startswith(('/', '\\')):
@@ -9,11 +17,27 @@ def validate_filename(filename: str, max_length: int) -> Optional[str]:
     return None
 
 def validate_file_extension(input_ext: str, allowed_extensions: list) -> Optional[str]:
+    """
+    Check if the file extension is allowed.
+    Args:
+        input_ext (str): The file extension to check.
+        allowed_extensions (list): List of allowed extensions.
+    Returns:
+        Optional[str]: The extension if not allowed, None if valid.
+    """
     if not input_ext or input_ext not in allowed_extensions:
         return input_ext
     return None
 
 def validate_target_format(target_format: str, allowed_extensions: list) -> Optional[str]:
+    """
+    Check if the target format is valid and allowed.
+    Args:
+        target_format (str): The requested output format.
+        allowed_extensions (list): List of allowed extensions.
+    Returns:
+        Optional[str]: Error message or format if invalid, None if valid.
+    """
     if not target_format:
         return Messages.TARGET_FORMAT_NOT_PROVIDED
     if not target_format.isalpha() or target_format not in allowed_extensions:
@@ -21,12 +45,29 @@ def validate_target_format(target_format: str, allowed_extensions: list) -> Opti
     return None
 
 def validate_conversion_allowed(input_ext: str, target_format: str, supported_conversions: dict) -> Optional[str]:
+    """
+    Check if the requested conversion is allowed.
+    Args:
+        input_ext (str): The input file extension.
+        target_format (str): The requested output format.
+        supported_conversions (dict): Mapping of allowed conversions.
+    Returns:
+        Optional[str]: Error string if not allowed, None if valid.
+    """
     allowed_targets = supported_conversions.get(input_ext, [])
     if target_format not in allowed_targets:
         return f"{input_ext}|{target_format}"
     return None
 
 def validate_file_size(file_size: int, max_file_size_mb: int) -> Optional[str]:
+    """
+    Validate the file size against the maximum allowed size.
+    Args:
+        file_size (int): File size in bytes.
+        max_file_size_mb (int): Maximum allowed size in megabytes.
+    Returns:
+        Optional[str]: 'empty' if file is empty, max size as string if too large, None if valid.
+    """
     file_size_mb = file_size / (1024 * 1024)
     if file_size_mb > max_file_size_mb:
         return str(max_file_size_mb)
@@ -35,6 +76,14 @@ def validate_file_size(file_size: int, max_file_size_mb: int) -> Optional[str]:
     return None
 
 def validate_mime_type(content_type: str, allowed_mime_types: list) -> Optional[str]:
+    """
+    Check if the MIME type is allowed.
+    Args:
+        content_type (str): The MIME type of the file.
+        allowed_mime_types (list): List of allowed MIME types.
+    Returns:
+        Optional[str]: The MIME type if not allowed, None if valid.
+    """
     if allowed_mime_types and content_type not in allowed_mime_types:
         return content_type
     return None
