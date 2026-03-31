@@ -1,5 +1,6 @@
 import logging
 import sys
+from app.config.settings import settings
 
 def get_logger(name: str = "file_converter"):
     """
@@ -15,7 +16,10 @@ def get_logger(name: str = "file_converter"):
         )
         handler.setFormatter(formatter)
         logger.addHandler(handler)
-    logger.setLevel(logging.INFO)
+    level = getattr(settings, "log_level", "INFO").upper()
+    if level not in ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]:
+        level = "INFO"
+    logger.setLevel(getattr(logging, level))
     return logger
 
 logger = get_logger()
