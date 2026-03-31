@@ -1,15 +1,35 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from app.config.settings import settings
+from app.config.paths import get_temp_dir, get_output_dir
 from app.api.routes.convert import router as convert_router
 from app.api.routes.health import router as health_router
 from app.api.routes.formats import router as formats_router
 from app.api.routes.download import router as download_router
 from app.utils.logger import logger
-from app.utils.exceptions import ConversionError, ValidationError
+from app.utils.exceptions import ConversionError, ConversionEngineError, ValidationError
 from fastapi.responses import JSONResponse
+from app.utils.file_manager import remove_old_files_in_dir
+import threading
+import time
 
 def create_app() -> FastAPI:
+
+    temp_dir = get_temp_dir()
+    remove_old_files_in_dir(temp_dir, max_age_seconds=3600)
+
+    def periodic_cleanup_output_dir(interval_seconds: int = 3600, max_age_seconds: int = 86400):
+        output_dir = get_output_dir()
+        while True:
+            remove_old_files_in_dir(output_dir, max_age_seconds=max_age_seconds)
+            time.sleep(interval_seconds)
+
+    cleanup_thread = threading.Thread(
+        target=periodic_cleanup_output_dir,
+        kwargs={"interval_seconds": 3600, "max_age_seconds": 86400},
+        daemon=True
+    )
+    cleanup_thread.start()
 
     app = FastAPI(
         title=settings.app_name,
@@ -36,6 +56,14 @@ def create_app() -> FastAPI:
         return JSONResponse(
             status_code=500,
             content={"detail": exc.message, "type": "conversion_error"}
+        )
+
+    @app.exception_handler(ConversionEngineError)
+    async def conversion_engine_error_handler(request: Request, exc: ConversionEngineError):
+        logger.error(f"ConversionEngineError: {exc.message}")
+        return JSONResponse(
+            status_code=500,
+            content={"detail": exc.message, "type": "conversion_engine_error"}
         )
 
     @app.exception_handler(ValidationError)
