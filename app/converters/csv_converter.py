@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import time
+from app.utils.exceptions import ConversionEngineError
 
 def csv_to_xlsx(input_file: str, output_file: str):
     try:
@@ -12,8 +13,8 @@ def csv_to_xlsx(input_file: str, output_file: str):
 
         while not os.path.exists(output_file):
             if time.time() - start_time > timeout:
-                raise Exception("XLSX was not generated")
+                raise ConversionEngineError("XLSX was not generated")
             time.sleep(0.5)
 
     except Exception as e:
-        raise Exception(f"Error converting CSV to XLSX: {str(e)}")
+        raise ConversionEngineError(f"Error converting CSV to XLSX: {str(e)}")

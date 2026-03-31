@@ -1,6 +1,7 @@
 import os
 import subprocess
 import time
+from app.utils.exceptions import ConversionEngineError
 
 def odt_to_docx(input_file: str, output_file: str):
     try:
@@ -23,10 +24,10 @@ def odt_to_docx(input_file: str, output_file: str):
 
         while not os.path.exists(generated_docx):
             if time.time() - start_time > timeout:
-                raise Exception("DOCX was not generated")
+                raise ConversionEngineError("DOCX was not generated")
             time.sleep(0.5)
 
         os.rename(generated_docx, output_file)
 
     except subprocess.CalledProcessError:
-        raise Exception("Error converting ODT to DOCX with LibreOffice")
+        raise ConversionEngineError("Error converting ODT to DOCX with LibreOffice")

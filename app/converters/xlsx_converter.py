@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import time
+from app.utils.exceptions import ConversionEngineError
 
 def xlsx_to_csv(input_file: str, output_file: str):
     try:
@@ -12,11 +13,11 @@ def xlsx_to_csv(input_file: str, output_file: str):
 
         while not os.path.exists(output_file):
             if time.time() - start_time > timeout:
-                raise Exception("CSV was not generated")
+                raise ConversionEngineError("CSV was not generated")
             time.sleep(0.5)
 
     except Exception as e:
-        raise Exception(f"Error converting XLSX to CSV: {str(e)}")
+        raise ConversionEngineError(f"Error converting XLSX to CSV: {str(e)}")
     
 def xlsx_to_json(input_file: str, output_file: str):
     try:
@@ -28,11 +29,11 @@ def xlsx_to_json(input_file: str, output_file: str):
 
         while not os.path.exists(output_file):
             if time.time() - start_time > timeout:
-                raise Exception("JSON was not generated")
+                raise ConversionEngineError("JSON was not generated")
             time.sleep(0.5)
 
     except Exception as e:
-        raise Exception(f"Error converting XLSX to JSON: {str(e)}")
+        raise ConversionEngineError(f"Error converting XLSX to JSON: {str(e)}")
 
 def xlsx_to_txt(input_file: str, output_file: str): # Necesita ajuste, no se ve bien el formato
     try:
@@ -46,8 +47,8 @@ def xlsx_to_txt(input_file: str, output_file: str): # Necesita ajuste, no se ve 
 
         while not os.path.exists(output_file):
             if time.time() - start_time > timeout:
-                raise Exception("TXT was not generated")
+                raise ConversionEngineError("TXT was not generated")
             time.sleep(0.5)
 
     except Exception as e:
-        raise Exception(f"Error converting XLSX to TXT: {str(e)}")
+        raise ConversionEngineError(f"Error converting XLSX to TXT: {str(e)}")

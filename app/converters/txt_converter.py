@@ -1,6 +1,7 @@
 import os
 import subprocess
 import time
+from app.utils.exceptions import ConversionEngineError
 
 def txt_to_pdf(input_file: str, output_file: str):    
     try:
@@ -23,10 +24,10 @@ def txt_to_pdf(input_file: str, output_file: str):
 
         while not os.path.exists(generated_pdf):
             if time.time() - start_time > timeout:
-                raise Exception("PDF was not generated")
+                raise ConversionEngineError("PDF was not generated")
             time.sleep(0.5)
 
         os.rename(generated_pdf, output_file)
 
     except subprocess.CalledProcessError:
-        raise Exception("Error converting TXT to PDF with LibreOffice")
+        raise ConversionEngineError("Error converting TXT to PDF with LibreOffice")

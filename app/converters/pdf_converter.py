@@ -1,6 +1,7 @@
 import os
 import time
 from pdf2docx import Converter
+from app.utils.exceptions import ConversionEngineError
 
 def pdf_to_docx(input_file: str, output_file: str):
     try:
@@ -13,8 +14,8 @@ def pdf_to_docx(input_file: str, output_file: str):
 
         while not os.path.exists(output_file):
             if time.time() - start_time > timeout:
-                raise Exception("DOCX was not generated")
+                raise ConversionEngineError("DOCX was not generated")
             time.sleep(0.5)
 
     except Exception as e:
-        raise Exception(f"Error converting PDF to DOCX: {str(e)}")
+        raise ConversionEngineError(f"Error converting PDF to DOCX: {str(e)}")

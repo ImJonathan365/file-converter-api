@@ -1,6 +1,7 @@
 from PIL import Image
 import os
 import time
+from app.utils.exceptions import ConversionEngineError
 
 def image_to_pdf(input_file: str, output_file: str):
     try:
@@ -26,8 +27,8 @@ def image_to_pdf(input_file: str, output_file: str):
 
         while not os.path.exists(output_file):
             if time.time() - start_time > timeout:
-                raise Exception("PDF was not generated")
+                raise ConversionEngineError("PDF was not generated")
             time.sleep(0.5)
 
     except Exception as e:
-        raise Exception(f"Error converting image to PDF: {str(e)}")
+        raise ConversionEngineError(f"Error converting image to PDF: {str(e)}")

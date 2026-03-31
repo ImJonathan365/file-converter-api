@@ -11,6 +11,18 @@ class ConversionError(Exception):
         super().__init__(message)
 
 
+class ConversionEngineError(Exception):
+    """
+    Exception raised for errors that occur within the conversion engine itself, such as issues with external tools or libraries.
+
+    Attributes:
+        message (str): Description of the error that occurred within the conversion engine.
+    """
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(message)
+
+
 class ValidationError(Exception):
     """
     Exception raised for validation errors in user input or file formats.
