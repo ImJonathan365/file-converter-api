@@ -13,8 +13,30 @@ class Settings(BaseSettings):
     output_dir: str = Field("./output", env="OUTPUT_DIR")
     max_file_size_mb: int = Field(20, env="MAX_FILE_SIZE_MB")
     conversion_timeout_seconds: int = Field(120, env="CONVERSION_TIMEOUT_SECONDS")
-    allowed_extensions: List[str] = Field(default_factory=list, env="ALLOWED_EXTENSIONS")
-    allowed_mime_types: List[str] = Field(default_factory=list, env="ALLOWED_MIME_TYPES")
+    allowed_extensions: List[str] = Field(
+        default_factory=lambda: [
+            "pdf", "docx", "odt", "txt", "md", "html", "xlsx", "csv", "json", "jpg", "jpeg", "png", "bmp", "tiff"
+        ],
+        env="ALLOWED_EXTENSIONS"
+    )
+    allowed_mime_types: List[str] = Field(
+        default_factory=lambda: [
+            "application/pdf",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "text/plain",
+            "text/markdown",
+            "text/html",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.ms-excel",
+            "text/csv",
+            "application/json",
+            "image/jpeg",
+            "image/png",
+            "image/bmp",
+            "image/tiff"
+        ],
+        env="ALLOWED_MIME_TYPES"
+    )
     
     supported_conversions: Dict[str, List[str]] = {
         "docx": ["pdf", "txt", "html", "md"],
