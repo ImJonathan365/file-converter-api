@@ -23,6 +23,7 @@ class Settings(BaseSettings):
         default_factory=lambda: [
             "application/pdf",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.oasis.opendocument.text",
             "text/plain",
             "text/markdown",
             "text/html",
