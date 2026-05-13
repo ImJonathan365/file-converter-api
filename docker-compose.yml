@@ -1,0 +1,9 @@
+services:
+  api:
+    build: .
+    container_name: file-converter-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./temp:/app/temp
+      - ./output:/app/output
